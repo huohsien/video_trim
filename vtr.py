@@ -26,9 +26,15 @@ def check_timestamp_format(time_str, at_beginning):
     comps = time_str.split('_')
     # print("len(comps)= ", len(comps))
     len_comps = len(comps)
+
+    if len_comps == 0:
+        # print("$1")
+        return False
+
     if len_comps > 3:
         # print("#1")
         return False
+
     for comp in comps:
         try:
             n = int(comp)
@@ -40,7 +46,7 @@ def check_timestamp_format(time_str, at_beginning):
             # print("@2")
             return False
 
-    if len_comps == 1:
+    if len_comps < 3:
         if at_beginning:
             # print("@3")
             return True
@@ -91,15 +97,12 @@ def main():
             cmd_str = "time ffmpeg -i \"{}\" -vcodec copy -acodec copy -ss {} -to {} \"{}\"" \
                 .format(full_path, start_time, end_time, output_filename)
 
-        print("cmd_str= {}".format(cmd_str))
+        # print("cmd_str= {}".format(cmd_str))
 
         if not yes_or_no("Start trimming?"):
             os._exit(0)
         else:
             os.system(cmd_str)
-
-
-
 
 if __name__ == "__main__":
     main()
